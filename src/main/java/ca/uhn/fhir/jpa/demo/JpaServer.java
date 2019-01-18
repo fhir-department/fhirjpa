@@ -7,9 +7,12 @@ import ca.uhn.fhir.jpa.dao.IFhirSystemDao;
 import ca.uhn.fhir.jpa.provider.JpaConformanceProviderDstu2;
 import ca.uhn.fhir.jpa.provider.JpaSystemProviderDstu2;
 //import ca.uhn.fhir.jpa.provider.SubscriptionTriggeringProvider;
+import ca.uhn.fhir.jpa.provider.SubscriptionTriggeringProvider;
 import ca.uhn.fhir.jpa.provider.dstu3.JpaConformanceProviderDstu3;
 import ca.uhn.fhir.jpa.provider.dstu3.JpaSystemProviderDstu3;
 import ca.uhn.fhir.jpa.provider.dstu3.TerminologyUploaderProviderDstu3;
+import ca.uhn.fhir.jpa.provider.r4.JpaConformanceProviderR4;
+import ca.uhn.fhir.jpa.provider.r4.JpaSystemProviderR4;
 import ca.uhn.fhir.jpa.search.DatabaseBackedPagingProvider;
 //import ca.uhn.fhir.jpa.subscription.resthook.SubscriptionRestHookInterceptor;
 import ca.uhn.fhir.model.dstu2.composite.MetaDt;
@@ -22,6 +25,7 @@ import ca.uhn.fhir.rest.server.RestfulServer;
 import ca.uhn.fhir.rest.server.interceptor.ResponseHighlighterInterceptor;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Meta;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ContextLoaderListener;
@@ -30,10 +34,10 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.ServletException;
 import java.util.List;
 
-public class JpaServerDemo extends RestfulServer {
+public class JpaServer extends RestfulServer {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger ourLog = LoggerFactory.getLogger(JpaServerDemo.class);
+    private static final Logger ourLog = LoggerFactory.getLogger(JpaServer.class);
 
     private WebApplicationContext myAppCtx;
 
@@ -48,7 +52,7 @@ public class JpaServerDemo extends RestfulServer {
          *
          * If you want to use DSTU1 instead, change the following line, and change the 2 occurrences of dstu2 in web.xml to dstu1
          */
-        FhirVersionEnum fhirVersion = FhirVersionEnum.DSTU3;
+        FhirVersionEnum fhirVersion = FhirVersionEnum.R4;
         setFhirContext(new FhirContext(fhirVersion));
 
         // Get the spring context from the web container (it's declared in web.xml)
@@ -64,6 +68,8 @@ public class JpaServerDemo extends RestfulServer {
             resourceProviderBeanName = "myResourceProvidersDstu2";
         } else if (fhirVersion == FhirVersionEnum.DSTU3) {
             resourceProviderBeanName = "myResourceProvidersDstu3";
+        } else if (fhirVersion == FhirVersionEnum.R4) {
+            resourceProviderBeanName = "myResourceProvidersR4";
         } else {
             throw new IllegalStateException();
         }
@@ -79,6 +85,8 @@ public class JpaServerDemo extends RestfulServer {
             systemProvider = myAppCtx.getBean("mySystemProviderDstu2", JpaSystemProviderDstu2.class);
         } else if (fhirVersion == FhirVersionEnum.DSTU3) {
             systemProvider = myAppCtx.getBean("mySystemProviderDstu3", JpaSystemProviderDstu3.class);
+        } else if (fhirVersion == FhirVersionEnum.R4) {
+            systemProvider = myAppCtx.getBean("mySystemProviderR4", JpaSystemProviderR4.class);
         } else {
             throw new IllegalStateException();
         }
@@ -93,13 +101,19 @@ public class JpaServerDemo extends RestfulServer {
             IFhirSystemDao<ca.uhn.fhir.model.dstu2.resource.Bundle, MetaDt> systemDao = myAppCtx.getBean("mySystemDaoDstu2", IFhirSystemDao.class);
             JpaConformanceProviderDstu2 confProvider = new JpaConformanceProviderDstu2(this, systemDao,
                     myAppCtx.getBean(DaoConfig.class));
-            confProvider.setImplementationDescription("Example Server");
+            confProvider.setImplementationDescription("CLAIMCDR-FHIRJPA");
             setServerConformanceProvider(confProvider);
         } else if (fhirVersion == FhirVersionEnum.DSTU3) {
             IFhirSystemDao<Bundle, Meta> systemDao = myAppCtx.getBean("mySystemDaoDstu3", IFhirSystemDao.class);
             JpaConformanceProviderDstu3 confProvider = new JpaConformanceProviderDstu3(this, systemDao,
                     myAppCtx.getBean(DaoConfig.class));
-            confProvider.setImplementationDescription("Example Server");
+            confProvider.setImplementationDescription("CLAIMCDR-FHIRJPA");
+            setServerConformanceProvider(confProvider);
+        } else if (fhirVersion == FhirVersionEnum.R4) {
+            IFhirSystemDao<org.hl7.fhir.r4.model.Bundle, org.hl7.fhir.r4.model.Meta> systemDao = myAppCtx.getBean("mySystemDaoR4", IFhirSystemDao.class);
+            JpaConformanceProviderR4 confProvider = new JpaConformanceProviderR4(this, systemDao,
+                    myAppCtx.getBean(DaoConfig.class));
+            confProvider.setImplementationDescription("CLAIMCDR-FHIRJPA");
             setServerConformanceProvider(confProvider);
         } else {
             throw new IllegalStateException();

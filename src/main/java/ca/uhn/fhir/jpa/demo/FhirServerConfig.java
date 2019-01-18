@@ -5,13 +5,14 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import ca.uhn.fhir.jpa.model.entity.ModelConfig;
+//import ca.uhn.fhir.jpa.config.BaseJavaConfigDstu3;
+//import ca.uhn.fhir.jpa.model.entity.ModelConfig;
 import ca.uhn.fhir.jpa.search.DatabaseBackedPagingProvider;
 import ca.uhn.fhir.jpa.search.LuceneSearchMappingFactory;
-import ca.uhn.fhir.jpa.util.DerbyTenSevenHapiFhirDialect;
+import ca.uhn.fhir.jpa.util.SubscriptionsRequireManualActivationInterceptorR4;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.commons.lang3.time.DateUtils;
-import org.hibernate.jpa.HibernatePersistenceProvider;
+//import org.apache.commons.lang3.time.DateUtils;
+//import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +20,9 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import ca.uhn.fhir.jpa.config.BaseJavaConfigDstu3;
+import ca.uhn.fhir.jpa.config.BaseJavaConfigR4;
 import ca.uhn.fhir.jpa.dao.DaoConfig;
-import ca.uhn.fhir.jpa.util.SubscriptionsRequireManualActivationInterceptorDstu3;
+//import ca.uhn.fhir.jpa.util.SubscriptionsRequireManualActivationInterceptorDstu3;
 import ca.uhn.fhir.rest.server.interceptor.IServerInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.LoggingInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.ResponseHighlighterInterceptor;
@@ -31,7 +32,7 @@ import ca.uhn.fhir.rest.server.interceptor.ResponseHighlighterInterceptor;
  */
 @Configuration
 @EnableTransactionManagement()
-public class FhirServerConfig extends BaseJavaConfigDstu3 {
+public class FhirServerConfig extends BaseJavaConfigR4 {
 
 	/**
 	 * Configure FHIR properties around the the JPA server via this bean
@@ -44,10 +45,10 @@ public class FhirServerConfig extends BaseJavaConfigDstu3 {
 	}
 
 
-	@Bean
-	public ModelConfig modelConfig() {
-		return daoConfig().getModelConfig();
-	}
+//	@Bean
+//	public ModelConfig modelConfig() {
+//		return daoConfig().getModelConfig();
+//	}
 
 	/**
 	 * We override the paging provider definition so that we can customize
@@ -71,10 +72,10 @@ public class FhirServerConfig extends BaseJavaConfigDstu3 {
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
 		BasicDataSource retVal = new BasicDataSource();
-		retVal.setDriver(new org.apache.derby.jdbc.EmbeddedDriver());
-		retVal.setUrl("jdbc:derby:directory:target/jpaserver_derby_files;create=true");
-		retVal.setUsername("");
-		retVal.setPassword("");
+		retVal.setDriver(new org.postgresql.Driver());
+		retVal.setUrl("jdbc:postgresql://dev-claimcdr.cmqs7xhadyaj.us-west-2.rds.amazonaws.com/fhirjpa");
+		retVal.setUsername("devadmin");
+		retVal.setPassword("Devadmin&2018");
 		return retVal;
 	}
 
@@ -90,7 +91,7 @@ public class FhirServerConfig extends BaseJavaConfigDstu3 {
 
 	private Properties jpaProperties() {
 		Properties extraProperties = new Properties();
-		extraProperties.put("hibernate.dialect", DerbyTenSevenHapiFhirDialect.class.getName());
+		extraProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 		extraProperties.put("hibernate.format_sql", "false");
 		extraProperties.put("hibernate.show_sql", "false");
 		extraProperties.put("hibernate.hbm2ddl.auto", "update");
@@ -131,7 +132,7 @@ public class FhirServerConfig extends BaseJavaConfigDstu3 {
 
 	@Bean(autowire = Autowire.BY_TYPE)
 	public IServerInterceptor subscriptionSecurityInterceptor() {
-		SubscriptionsRequireManualActivationInterceptorDstu3 retVal = new SubscriptionsRequireManualActivationInterceptorDstu3();
+		SubscriptionsRequireManualActivationInterceptorR4 retVal = new SubscriptionsRequireManualActivationInterceptorR4();
 		return retVal;
 	}
 

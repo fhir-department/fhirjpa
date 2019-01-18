@@ -11,14 +11,14 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>hapi-fhir</artifactId>
-        <version>3.7.0-SNAPSHOT</version>
+        <version>3.6.0</version>
     </parent>
 
     <groupId>ca.uhn.hapi.fhir.demo</groupId>
     <artifactId>hapi-fhir-jpaserver-starter</artifactId>
     <packaging>war</packaging>
 
-    <name>HAPI FHIR JPA Server - Starter Project</name>
+    <name>CLAIMCDR-FHIRJPA</name>
 
     <repositories>
         <repository>
@@ -54,10 +54,12 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- At least one "structures" JAR must also be included -->
+
+
+        <!-- https://mvnrepository.com/artifact/ca.uhn.hapi.fhir/hapi-fhir-structures-r4 -->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>hapi-fhir-structures-dstu3</artifactId>
+            <artifactId>hapi-fhir-structures-r4</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -136,20 +138,30 @@
 
         </dependency>
 
-        <!-- This example uses Derby embedded database. If you are using another database such as Mysql or Oracle, you may omit the following dependencies and replace them with an appropriate database client
-            dependency for your database platform. -->
+        <!--&lt;!&ndash; This example uses Derby embedded database. If you are using another database such as Mysql or Oracle, you may omit the following dependencies and replace them with an appropriate database client-->
+            <!--dependency for your database platform. &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.derby</groupId>-->
+            <!--<artifactId>derby</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.derby</groupId>-->
+            <!--<artifactId>derbynet</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.derby</groupId>-->
+            <!--<artifactId>derbyclient</artifactId>-->
+        <!--</dependency>-->
+
+
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.5</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derbynet</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derbyclient</artifactId>
-        </dependency>
+
+
 
         <!-- The following dependencies are only needed for automated unit tests, you do not neccesarily need them to run the example. -->
         <dependency>
