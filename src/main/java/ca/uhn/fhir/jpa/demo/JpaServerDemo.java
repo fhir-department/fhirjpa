@@ -6,12 +6,12 @@ import ca.uhn.fhir.jpa.dao.DaoConfig;
 import ca.uhn.fhir.jpa.dao.IFhirSystemDao;
 import ca.uhn.fhir.jpa.provider.JpaConformanceProviderDstu2;
 import ca.uhn.fhir.jpa.provider.JpaSystemProviderDstu2;
-import ca.uhn.fhir.jpa.provider.SubscriptionTriggeringProvider;
+//import ca.uhn.fhir.jpa.provider.SubscriptionTriggeringProvider;
 import ca.uhn.fhir.jpa.provider.dstu3.JpaConformanceProviderDstu3;
 import ca.uhn.fhir.jpa.provider.dstu3.JpaSystemProviderDstu3;
 import ca.uhn.fhir.jpa.provider.dstu3.TerminologyUploaderProviderDstu3;
 import ca.uhn.fhir.jpa.search.DatabaseBackedPagingProvider;
-import ca.uhn.fhir.jpa.subscription.resthook.SubscriptionRestHookInterceptor;
+//import ca.uhn.fhir.jpa.subscription.resthook.SubscriptionRestHookInterceptor;
 import ca.uhn.fhir.model.dstu2.composite.MetaDt;
 import ca.uhn.fhir.narrative.DefaultThymeleafNarrativeGenerator;
 import ca.uhn.fhir.rest.api.EncodingEnum;
@@ -166,21 +166,21 @@ public class JpaServerDemo extends RestfulServer {
          * If you want to support subscriptions, you will want to register interceptors for
          * any type of subscriptions you want to support.
          */
-        boolean subscriptionsEnabled = false;
-        if (subscriptionsEnabled) { // <-- DISABLED RIGHT NOW
-            SubscriptionRestHookInterceptor restHookInterceptor = myAppCtx.getBean(SubscriptionRestHookInterceptor.class);
-            registerInterceptor(restHookInterceptor);
-
-            // You might alo want to enable other subscription interceptors too
-            // eg...
-            // myAppCtx.getBean(SubscriptionWebsocketInterceptor.class);
-            // myAppCtx.getBean(SubscriptionEmailInterceptor.class);
-
-            // If you want to enable the $trigger-subscription operation to allow
-            // manual triggering of a subscription delivery, enable this provider
-            SubscriptionTriggeringProvider retriggeringProvider = myAppCtx.getBean(SubscriptionTriggeringProvider.class);
-            registerProvider(retriggeringProvider);
-        }
+//        boolean subscriptionsEnabled = false;
+//        if (subscriptionsEnabled) { // <-- DISABLED RIGHT NOW
+//            SubscriptionRestHookInterceptor restHookInterceptor = myAppCtx.getBean(SubscriptionRestHookInterceptor.class);
+//            registerInterceptor(restHookInterceptor);
+//
+//            // You might alo want to enable other subscription interceptors too
+//            // eg...
+//            // myAppCtx.getBean(SubscriptionWebsocketInterceptor.class);
+//            // myAppCtx.getBean(SubscriptionEmailInterceptor.class);
+//
+//            // If you want to enable the $trigger-subscription operation to allow
+//            // manual triggering of a subscription delivery, enable this provider
+//            SubscriptionTriggeringProvider retriggeringProvider = myAppCtx.getBean(SubscriptionTriggeringProvider.class);
+//            registerProvider(retriggeringProvider);
+//        }
 
     }
 
