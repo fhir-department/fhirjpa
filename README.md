@@ -1,5 +1,7 @@
 # HAPI-FHIR Starter Project
 
+paste this in the Maven Run Configuration:  `jetty:run -Djetty.http.port=9999`
+
 This project is a complete starter project you can use to deploy a FHIR server using HAPI FHIR JPA.
 
 # Prerequisites
