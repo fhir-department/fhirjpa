@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.hl7.fhir.dstu3.model.Patient;
+import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.junit.*;
 
@@ -20,7 +20,7 @@ public class ExampleServerIT {
 
 	private static final org.slf4j.Logger ourLog = org.slf4j.LoggerFactory.getLogger(ExampleServerIT.class);
 	private static IGenericClient ourClient;
-	private static FhirContext ourCtx = FhirContext.forDstu3();
+	private static FhirContext ourCtx = FhirContext.forR4();
 	private static int ourPort;
 
 	private static Server ourServer;
@@ -28,7 +28,7 @@ public class ExampleServerIT {
 
 	@Test
 	public void testCreateAndRead() throws IOException {
-		ourLog.info("Base URL is: http://localhost:" + ourPort + "/baseDstu3");
+		ourLog.info("Base URL is: http://localhost:" + ourPort + "/r4");
 		String methodName = "testCreateResourceConditional";
 
 		Patient pt = new Patient();
@@ -64,7 +64,7 @@ public class ExampleServerIT {
 		WebAppContext webAppContext = new WebAppContext();
 		webAppContext.setContextPath("/");
 		webAppContext.setDescriptor(path + "/src/main/webapp/WEB-INF/web.xml");
-		webAppContext.setResourceBase(path + "/target/hapi-fhir-jpaserver-starter");
+		webAppContext.setResourceBase(path + "/target/fhirjpa");
 		webAppContext.setParentLoaderPriority(true);
 
 		ourServer.setHandler(webAppContext);
@@ -72,7 +72,7 @@ public class ExampleServerIT {
 
 		ourCtx.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
 		ourCtx.getRestfulClientFactory().setSocketTimeout(1200 * 1000);
-		ourServerBase = "http://localhost:" + ourPort + "/baseDstu3";
+		ourServerBase = "http://localhost:" + ourPort + "/r4";
 		ourClient = ourCtx.newRestfulGenericClient(ourServerBase);
 		ourClient.registerInterceptor(new LoggingInterceptor(true));
 
