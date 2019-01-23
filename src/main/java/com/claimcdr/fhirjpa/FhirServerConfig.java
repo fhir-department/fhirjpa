@@ -1,4 +1,4 @@
-package ca.uhn.fhir.jpa.demo;
+package com.claimcdr.fhirjpa;
 
 import java.util.Properties;
 

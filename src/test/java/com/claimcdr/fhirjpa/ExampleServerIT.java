@@ -1,4 +1,4 @@
-package ca.uhn.fhir.jpa.demo;
+package com.claimcdr.fhirjpa;
 
 import static org.junit.Assert.assertEquals;
 

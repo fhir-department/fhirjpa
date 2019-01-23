@@ -17,8 +17,8 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			ca.uhn.fhir.jpa.demo.FhirServerConfig
-		</param-value>
+            com.claimcdr.fhirjpa.FhirServerConfig
+        </param-value>
 	</context-param>
 
 	<!-- Servlets -->
@@ -32,14 +32,14 @@
 		</init-param>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>ca.uhn.fhir.jpa.demo.FhirTesterConfig</param-value>
+			<param-value>com.claimcdr.fhirjpa.FhirTesterConfig</param-value>
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 
 	<servlet>
 		<servlet-name>fhirServlet</servlet-name>
-		<servlet-class>ca.uhn.fhir.jpa.demo.JpaServer</servlet-class>
+		<servlet-class>com.claimcdr.fhirjpa.JpaServer</servlet-class>
 		<init-param>
 			<param-name>ImplementationDescription</param-name>
 			<param-value>FHIR JPA Server</param-value>
