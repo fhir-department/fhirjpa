@@ -1,5 +1,8 @@
 # HAPI-FHIR Starter Project
+#### Current 01/24/19
+http://fhirjpa.us-west-2.elasticbeanstalk.com/
 
+#### Deprecated
 paste this in the Maven Run Configuration:  `jetty:run -Djetty.http.port=9999`
 access the GUI at `http://localhost:9999/hapi-fhir-jpaserver/`
 
